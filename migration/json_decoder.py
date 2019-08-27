@@ -14,7 +14,7 @@ def get_credentials(s: str) -> Credentials:
 
 def get_mount_point(s: str) -> MountPoint:
     json_ = json.loads(s)
-    return MountPoint(json_['mount_point_name'], json_['size'])
+    return MountPoint(json_['mount_point_name'].replace("\\\\", "\\"), json_['size'])
 
 
 def get_workload(s: str) -> Workload:

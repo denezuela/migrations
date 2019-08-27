@@ -58,3 +58,4 @@ docs/_build/
 # PyBuilder
 target/
 /tests/credentials/
+/tests/mount_points/
