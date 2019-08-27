@@ -14,6 +14,9 @@ class MigrationState(Enum):
     ERROR = 3
     SUCCESS = 4
 
+    def repr_json(self):
+        return dict(state=self.name)
+
 
 class Migration:
     def __init__(self, mount_points: [MountPoint], source: Workload, migration_target: MigrationTarget):
@@ -42,3 +45,7 @@ class Migration:
         self.migration_state = MigrationState.RUNNING
         sleep(1)
         self.migration_state = MigrationState.SUCCESS
+
+    def repr_json(self):
+        return dict(mount_points=self.mount_points, source=self.source, migration_target=self.migration_target,
+                    migration_state=self.migration_state)

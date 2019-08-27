@@ -33,3 +33,6 @@ class Credentials:
             self._password = value
         else:
             raise AttributeError("Username should not be None")
+
+    def repr_json(self):
+        return dict(username=self.username, password=self.password, domain=self.domain)

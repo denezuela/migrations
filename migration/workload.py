@@ -15,3 +15,6 @@ class Workload:
     @property
     def ip(self):
         return self._ip
+
+    def repr_json(self):
+        return dict(ip=self.ip, credentials=self.credentials, storage=self.storage)
