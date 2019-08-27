@@ -36,11 +36,13 @@ class MigrationTargetPickler(JsonPickler):
 
     def fits(self, pickle_object: MigrationTarget, object: MigrationTarget) -> bool:
         if pickle_object is not None and object is not None:
-            if not self.credentials_pickler.fits(pickle_object.cloud_credentials, object.cloud_credentials):
-                return False
+            if object.cloud_credentials is not None:
+                if not self.credentials_pickler.fits(pickle_object.cloud_credentials, object.cloud_credentials):
+                    return False
 
-            if not self.workload_pickler.fits(pickle_object.target_vm, object.target_vm):
-                return False
+            if object.target_vm is not None:
+                if not self.workload_pickler.fits(pickle_object.target_vm, object.target_vm):
+                    return False
 
             if object.cloud_type is not None:
                 if pickle_object.cloud_type != object.cloud_type.name:
