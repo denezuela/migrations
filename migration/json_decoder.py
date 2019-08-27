@@ -8,16 +8,25 @@ from .migration import Migration, MigrationState
 
 
 def get_credentials(s: str) -> Credentials:
+    if s == "null":
+        return None
+
     json_ = json.loads(s)
     return Credentials(json_['username'], json_['password'], json_['domain'])
 
 
 def get_mount_point(s: str) -> MountPoint:
+    if s == "null":
+        return None
+
     json_ = json.loads(s)
     return MountPoint(json_['mount_point_name'].replace("\\\\", "\\"), json_['size'])
 
 
 def get_workload(s: str) -> Workload:
+    if s == "null":
+        return None
+
     json_ = json.loads(s)
     ip = json_['ip']
     credentials = get_credentials(json.dumps(json_['credentials']))
@@ -26,6 +35,8 @@ def get_workload(s: str) -> Workload:
 
 
 def get_cloud_type(s: str) -> CloudType:
+    if s == "null":
+        return None
     if s == "AWS":
         return CloudType.AWS
     if s == "Azure":
@@ -38,6 +49,8 @@ def get_cloud_type(s: str) -> CloudType:
 
 
 def get_migration_target(s: str) -> MigrationTarget:
+    if s == "null":
+        return None
     json_ = json.loads(s)
     cloud_type = json_['cloud_type']['state']
     credentials = get_credentials(json.dumps(json_['cloud_credentials']))
@@ -46,6 +59,8 @@ def get_migration_target(s: str) -> MigrationTarget:
 
 
 def get_migration_state(s: str) -> MigrationState:
+    if s == "null":
+        return None
     if s == "NOT_STARTED":
         return MigrationState.NOT_STARTED
     if s == "RUNNING":
@@ -57,6 +72,9 @@ def get_migration_state(s: str) -> MigrationState:
 
 
 def get_migration(s: str) -> Migration:
+    if s == "null":
+        return None
+
     json_ = json.loads(s)
     mount_points = [get_mount_point(json.dumps(s)) for s in json_['mount_points']]
     source = get_workload(json.dumps(json_['source']))

@@ -60,3 +60,4 @@ target/
 /tests/credentials/
 /tests/mount_points/
 /tests/workloads/
+/tests/migration_targets/

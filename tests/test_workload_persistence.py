@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
         for filename in os.listdir(WORKLOADS_DIRNAME):
             os.remove(os.path.join(WORKLOADS_DIRNAME, filename))
 
-    def test_create_and_read_credentials(self):
+    def test_create_and_read_one_record(self):
         credentials = Credentials("username", "password", "domain")
         workload = Workload("192.168.0.1", credentials, [MountPoint("C:\\", 1024)])
         workload_pickler.create(workload)

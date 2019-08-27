@@ -16,7 +16,7 @@ class MyTestCase(unittest.TestCase):
         for filename in os.listdir(MOUNT_POINTS_DIRNAME):
             os.remove(os.path.join(MOUNT_POINTS_DIRNAME, filename))
 
-    def test_create_and_read_credentials(self):
+    def test_create_and_read_one_record(self):
         mount_point = MountPoint("C:\\", 1024)
         mount_point_pickler.create(mount_point)
         ret = mount_point_pickler.read(mount_point)
