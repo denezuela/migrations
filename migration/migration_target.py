@@ -1,5 +1,6 @@
 from .credentials import Credentials
 from .workload import Workload
+from .serializable import Serializable
 
 from enum import Enum
 
@@ -14,7 +15,7 @@ class CloudType(Enum):
         return dict(state=self.name)
 
 
-class MigrationTarget:
+class MigrationTarget(Serializable):
     def __init__(self, cloud_type: CloudType, cloud_credentials: Credentials, target_vm: Workload):
         self.cloud_type = cloud_type
         self.cloud_credentials = cloud_credentials

@@ -1,8 +1,8 @@
 from .credentials import Credentials
 from .mount_point import MountPoint
+from .serializable import Serializable
 
-
-class Workload:
+class Workload(Serializable):
     def __init__(self, ip: str, credentials: Credentials, storage: [MountPoint]):
         if ip is not None:
             self._ip = ip

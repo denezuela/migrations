@@ -1,4 +1,7 @@
-class Credentials:
+from .serializable import Serializable
+
+
+class Credentials(Serializable):
     def __init__(self, username: str, password: str, domain: str):
         if username is not None:
             self._username = username

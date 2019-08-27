@@ -1,6 +1,7 @@
 from .migration_target import MigrationTarget
 from .mount_point import MountPoint
 from .workload import Workload
+from .serializable import Serializable
 
 from enum import Enum
 from time import sleep
@@ -18,7 +19,7 @@ class MigrationState(Enum):
         return dict(state=self.name)
 
 
-class Migration:
+class Migration(Serializable):
     def __init__(self, mount_points: [MountPoint], source: Workload, migration_target: MigrationTarget):
         self.mount_points = mount_points
         self.source = source
