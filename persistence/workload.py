@@ -28,7 +28,7 @@ class WorkloadPickler(JsonPickler):
         return True, ""
 
     def is_possible_to_update(self, old_workload: object, new_workload: object) -> (bool, str):
-        if old_workload.ip != new_workload.ip:
+        if old_workload.ip == new_workload.ip:
             return False, "Cannot update IP value"
 
         return True, ""
