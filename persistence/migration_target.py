@@ -45,7 +45,7 @@ class MigrationTargetPickler(JsonPickler):
                     return False
 
             if object.cloud_type is not None:
-                if pickle_object.cloud_type != object.cloud_type.name:
+                if pickle_object.cloud_type != object.cloud_type:
                     return False
         else:
             return pickle_object is None and object is None
