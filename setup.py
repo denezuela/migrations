@@ -7,5 +7,5 @@ setup(
     license='MIT',
     description='Test Task',
     author='Denis Zagumennov',
-    author_email='zagumionnov.denis@yandex.ru'
+    author_email='zagumionnov.denis@yandex.ru', install_requires=['flask', 'requests']
 )
