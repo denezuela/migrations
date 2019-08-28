@@ -6,7 +6,7 @@ from .serializable import Serializable
 from enum import Enum
 from time import sleep
 
-X = 1
+X = 5
 
 
 class MigrationState(Enum):
@@ -14,9 +14,6 @@ class MigrationState(Enum):
     RUNNING = 2
     ERROR = 3
     SUCCESS = 4
-
-    def repr_json(self):
-        return dict(state=self.name)
 
 
 class Migration(Serializable):
@@ -27,6 +24,7 @@ class Migration(Serializable):
         self.migration_state = MigrationState.NOT_STARTED
 
     def run(self):
+        self.migration_state = MigrationState.RUNNING
         selected_mount_points_names = [str(mp.mount_point_name) for mp in self.mount_points]
         if "C:\\" not in selected_mount_points_names:
             raise Exception("Migration is now allowed when C:\\ is not selected")
@@ -43,10 +41,9 @@ class Migration(Serializable):
 
         self.migration_target.target_vm = Workload(ip, credentials, storage)
 
-        self.migration_state = MigrationState.RUNNING
-        sleep(1)
+        sleep(X*60)
         self.migration_state = MigrationState.SUCCESS
 
     def repr_json(self):
         return dict(mount_points=self.mount_points, source=self.source, migration_target=self.migration_target,
-                    migration_state=self.migration_state)
+                    migration_state=self.migration_state.name)
