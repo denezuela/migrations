@@ -34,12 +34,12 @@ class MyTestCase(unittest.TestCase):
         workload_pickler.create(workload)
 
         credentials = Credentials("new_user", "qwerty", None)
-        new_workload = Workload("8.8.8.8", credentials, [MountPoint("C:\\", 1024)])
+        new_workload = Workload("7.7.7.7", credentials, [MountPoint("C:\\", 1024)])
         workload_pickler.update(workload, new_workload)
 
         ret = workload_pickler.read(new_workload)
         self.assertEqual(len(ret), 1)
-        self.assertEqual(ret[0].ip, "8.8.8.8")
+        self.assertEqual(ret[0].ip, "7.7.7.7")
         self.assertEqual(ret[0].credentials.username, "new_user")
         self.assertEqual(ret[0].storage[0].mount_point_name, "C:\\")
 
@@ -58,8 +58,8 @@ class MyTestCase(unittest.TestCase):
 
         workload_pickler.create(workload)
         with self.assertRaises(Exception):
-            workload = Workload("4.4.4.4", credentials, [MountPoint("E:\\", 1024)])
-            workload_pickler.update(workload)
+            new_workload = Workload("4.4.4.4", credentials, [MountPoint("E:\\", 1024)])
+            workload_pickler.update(workload, new_workload)
 
     def test_delete(self):
         credentials = Credentials("temp_user", "password", "domain")

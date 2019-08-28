@@ -23,7 +23,7 @@ class MyTestCase(unittest.TestCase):
         migration_target_pickler.create(migration_target)
 
         ret = migration_target_pickler.read(migration_target)
-        self.assertEqual(ret[0].cloud_type, CloudType.Azure.name)
+        self.assertEqual(ret[0].cloud_type, CloudType.Azure)
         self.assertEqual(ret[0].cloud_credentials.username, "username")
 
     def test_create_and_read_several_records(self):
@@ -47,7 +47,7 @@ class MyTestCase(unittest.TestCase):
         migration_target_pickler.update(migration_target, new_migration_target)
         ret = migration_target_pickler.read(new_migration_target)
         self.assertEqual(len(ret), 1)
-        self.assertEqual(ret[0].cloud_type, CloudType.AWS.name)
+        self.assertEqual(ret[0].cloud_type, CloudType.AWS)
 
     def test_delete(self):
         credentials = Credentials("user", "pass", None)

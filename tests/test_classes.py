@@ -75,7 +75,7 @@ class MyTestCase(unittest.TestCase):
 
         migration_target = MigrationTarget(CloudType.AWS, credentials, workload)
         self.assertEqual(json.dumps(migration_target.repr_json(), cls=ComplexEncoder),
-                         '{"cloud_type": {"state": "AWS"}, '
+                         '{"cloud_type": "AWS", '
                          '"cloud_credentials": {"username": "username", "password": "password", "domain": null}, '
                          '"target_vm": {"ip": "127.0.0.1", "credentials":'
                          ' {"username": "username", "password": "password", "domain": null}, '
@@ -87,12 +87,12 @@ class MyTestCase(unittest.TestCase):
                          '"source": {"ip": "127.0.0.1", '
                          '"credentials": {"username": "username", "password": "password", "domain": null}, '
                          r'"storage": [{"mount_point_name": "C:\\", "size": 1024}]}, '
-                         '"migration_target": {"cloud_type": {"state": "AWS"}, '
+                         '"migration_target": {"cloud_type": "AWS", '
                          '"cloud_credentials": {"username": "username", "password": "password", "domain": null}, '
                          '"target_vm": {"ip": "127.0.0.1", '
                          '"credentials": {"username": "username", "password": "password", "domain": null}, '
                          r'"storage": [{"mount_point_name": "C:\\", "size": 1024}]}}, '
-                         '"migration_state": {"state": "NOT_STARTED"}}')
+                         '"migration_state": "NOT_STARTED"}')
 
     def test_json_dec(self):
         s = '{"username": "username", "password": "password", "domain": null}'
@@ -109,25 +109,25 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(workload.ip, "127.0.0.1")
         self.assertEqual(workload.storage[0].size, 1024)
 
-        s = '{"cloud_type": {"state": "AWS"}, ' \
+        s = '{"cloud_type": "AWS", ' \
             '"cloud_credentials": {"username": "username", "password": "password", "domain": null}, ' \
             '"target_vm": {"ip": "127.0.0.1", ' \
             '"credentials": {"username": "username", "password": "password", "domain": null}, ' \
             r'"storage": [{"mount_point_name": "C:\\", "size": 1024}]}}'
         target = get_migration_target(s)
-        self.assertEqual(target.cloud_type, CloudType.AWS.name)
+        self.assertEqual(target.cloud_type, CloudType.AWS)
         self.assertEqual(target.target_vm.ip, "127.0.0.1")
 
         s = r'{"mount_points": [{"mount_point_name": "C:\\", "size": 1024}], ' \
             '"source": {"ip": "127.0.0.1", ' \
             '"credentials": {"username": "username", "password": "password", "domain": null}, ' \
             r'"storage": [{"mount_point_name": "C:\\", "size": 1024}]}, ' \
-            '"migration_target": {"cloud_type": {"state": "AWS"}, ' \
+            '"migration_target": {"cloud_type":  "AWS", ' \
             '"cloud_credentials": {"username": "username", "password": "password", "domain": null}, ' \
             '"target_vm": {"ip": "127.0.0.1", ' \
             '"credentials": {"username": "username", "password": "password", "domain": null}, ' \
             r'"storage": [{"mount_point_name": "C:\\", "size": 1024}]}}, ' \
-            '"migration_state": {"state": "RUNNING"}}'
+            '"migration_state": "RUNNING"}'
         migration = get_migration(s)
         self.assertEqual(migration.migration_state, MigrationState.RUNNING)
         self.assertEqual(migration.source.credentials.domain, None)

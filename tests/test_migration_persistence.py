@@ -30,7 +30,7 @@ class MyTestCase(unittest.TestCase):
 
         ret = migration_pickler.read(migration)
         self.assertEqual(len(ret), 1)
-        self.assertEqual(ret[0].migration_target.cloud_type, CloudType.Azure.name)
+        self.assertEqual(ret[0].migration_target.cloud_type, CloudType.Azure)
         self.assertEqual(ret[0].source.credentials.username, "username")
 
     def test_create_and_read_several_records(self):
