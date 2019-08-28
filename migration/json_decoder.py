@@ -52,7 +52,7 @@ def get_migration_target(s: str) -> MigrationTarget:
     if s == "null":
         return None
     json_ = json.loads(s)
-    cloud_type = json_['cloud_type']['state']
+    cloud_type = get_cloud_type(json_['cloud_type'])
     credentials = get_credentials(json.dumps(json_['cloud_credentials']))
     target_vm = get_workload(json.dumps(json_['target_vm']))
     return MigrationTarget(cloud_type, credentials, target_vm)
@@ -79,7 +79,7 @@ def get_migration(s: str) -> Migration:
     mount_points = [get_mount_point(json.dumps(s)) for s in json_['mount_points']]
     source = get_workload(json.dumps(json_['source']))
     migration_target = get_migration_target(json.dumps(json_['migration_target']))
-    migration_state = get_migration_state(json_['migration_state']['state'])
+    migration_state = get_migration_state(json_['migration_state'])
     migration = Migration(mount_points, source, migration_target)
     migration.migration_state = migration_state
     return migration
