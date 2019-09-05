@@ -163,6 +163,6 @@ def get_migration_status():
 
 if __name__ == '__main__':
     queue_listener = Listener()
-    Thread(target=app.run).start()
+    Thread(target=app.run, args=("127.0.0.1", 5000)).start()
     Thread(target=queue_listener.run, args=(q,)).start()
 
