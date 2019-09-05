@@ -67,6 +67,34 @@ class MyTestCase(unittest.TestCase):
         response_json = json.loads(res.text)
         self.assertTrue(response_json["success"])
 
+    def test_migrations(self):
+        credentials = Credentials("username", "password", "domain")
+        workload = Workload("127.0.0.1", credentials, [MountPoint("C:\\", 1024)])
+        migration_target = MigrationTarget(CloudType.Azure, credentials, None)
+        migration = Migration([MountPoint("C:\\", 1024)], workload, migration_target)
+        data = json.dumps(migration, cls=ComplexEncoder)
+
+        res = requests.post("http://127.0.0.1:5000/migrations/add", data=data)
+        self.assertEqual(res.status_code, 200)
+        response_json = json.loads(res.text)
+        self.assertTrue(response_json["success"])
+
+        new_workload = Workload("127.0.0.1", credentials, [MountPoint("E:\\", 1024)])
+        new_migration_target = MigrationTarget(CloudType.AWS, credentials, None)
+        new_migration = Migration([MountPoint("C:\\", 1024)], new_workload, new_migration_target)
+        new_migration_data = json.dumps(new_migration, cls=ComplexEncoder)
+        new_data = json.dumps({'old': json.loads(data), 'new': json.loads(new_migration_data)})
+
+        res = requests.post("http://127.0.0.1:5000/migrations/update", data=new_data)
+        self.assertEqual(res.status_code, 200)
+        response_json = json.loads(res.text)
+        self.assertTrue(response_json["success"])
+
+        res = requests.post("http://127.0.0.1:5000/migrations/delete", data=new_migration_data)
+        self.assertEqual(res.status_code, 200)
+        response_json = json.loads(res.text)
+        self.assertTrue(response_json["success"])
+
     def test_run_migration(self):
         credentials = Credentials("username", "password", None)
         migration_target = MigrationTarget(CloudType.Azure, credentials, None)

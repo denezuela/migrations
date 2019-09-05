@@ -3,7 +3,6 @@ from threading import Thread
 from queue import Queue
 
 from migration.json_decoder import get_workload, get_migration
-from migration.workload import Workload
 
 from api.listener import Listener
 
@@ -61,6 +60,53 @@ def update_workload():
         new_workload = get_workload(json.dumps(workloads_data['new']))
         workload_pickler = WorkloadPickler()
         workload_pickler.update(old_workload, new_workload)
+    except Exception as e:
+        response_json = {"success": False, "error": str(e)}
+        return Response(json.dumps(response_json), status=500, mimetype='application/json')
+
+    response_json = {"success": True, "error": None}
+    return Response(json.dumps(response_json), status=200, mimetype='application/json')
+
+
+@app.route('/migrations/add', methods=['POST'])
+def add_migration():
+    try:
+        migration_data = str(request.data, 'utf-8')
+        migration = get_migration(migration_data)
+        migration_pickler = MigrationPickler()
+        migration_pickler.create(migration)
+    except Exception as e:
+        response_json = {"success": False, "error": str(e)}
+        return Response(json.dumps(response_json), status=500, mimetype='application/json')
+
+    response_json = {"success": True, "error": None}
+    return Response(json.dumps(response_json), status=200, mimetype='application/json')
+
+
+@app.route('/migrations/delete', methods=['POST'])
+def delete_migration():
+    try:
+        migration_data = str(request.data, 'utf-8')
+        migration = get_migration(migration_data)
+        migration_pickler = MigrationPickler()
+        migration_pickler.delete(migration)
+    except Exception as e:
+        response_json = {"success": False, "error": str(e)}
+        return Response(json.dumps(response_json), status=500, mimetype='application/json')
+
+    response_json = {"success": True, "error": None}
+    return Response(json.dumps(response_json), status=200, mimetype='application/json')
+
+
+@app.route('/migrations/update', methods=['POST'])
+def update_migration():
+    try:
+        migration_data = json.loads(request.data)
+
+        old_migration = get_migration(json.dumps(migration_data['old']))
+        new_migration = get_migration(json.dumps(migration_data['new']))
+        migration_pickler = MigrationPickler()
+        migration_pickler.update(old_migration, new_migration)
     except Exception as e:
         response_json = {"success": False, "error": str(e)}
         return Response(json.dumps(response_json), status=500, mimetype='application/json')
