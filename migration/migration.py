@@ -41,7 +41,7 @@ class Migration(Serializable):
 
         self.migration_target.target_vm = Workload(ip, credentials, storage)
 
-        sleep(X*60)
+        sleep(X * 60)
         self.migration_state = MigrationState.SUCCESS
 
     def repr_json(self):
