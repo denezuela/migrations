@@ -17,8 +17,10 @@ class Listener:
             while not q.empty():
                 migration = q.get()
                 self.migration_pickler.create(migration)
-                Thread(target=migration.run).start()
-                Thread(target=self.status_updater, args=(migration,)).start()
+                run_thread = Thread(target=migration.run).start()
+                status_updater_thread = Thread(target=self.status_updater, args=(migration,)).start()
+                run_thread.join()
+                status_updater_thread.join()
 
             sleep(5)
 
